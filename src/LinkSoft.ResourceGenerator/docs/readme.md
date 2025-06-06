@@ -24,7 +24,7 @@ This project replaces the T4 templates used for resource generation with cross-p
 
    <ItemGroup>
     <Service Include="{some-weird-guid}" />
-  </ItemGroup>
+   </ItemGroup>
 
    <ItemGroup>
      <Compile Update="Resources.cs">
@@ -36,12 +36,14 @@ This project replaces the T4 templates used for resource generation with cross-p
    ```
 
    c. Make sure that the Resources.cs and Resources.tt files are deleted and excluded from the project
-  <ItemGroup>
-    <!-- Exclude the temporary Resources.cs file from compilation since we're using the generated one -->
-    <Compile Remove="Resources.cs" />
-    <!-- Delete the Resources.tt file since we don't need it anymore -->
-    <None Remove="Resources.tt" />
-  </ItemGroup>
+   ```xml
+   <ItemGroup>
+     <!-- Exclude the temporary Resources.cs file from compilation since we're using the generated one -->
+     <Compile Remove="Resources.cs" />
+     <!-- Delete the Resources.tt file since we don't need it anymore -->
+     <None Remove="Resources.tt" />
+   </ItemGroup>
+   ```
 
 2. Remove the Resources.tt files and Resources.cs files (they will be auto-generated during build)
 
