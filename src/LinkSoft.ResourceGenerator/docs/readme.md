@@ -2,36 +2,18 @@
 
 ## Overview
 
-This project replaces the T4 templates used for resource generation with a modern, cross-platform Roslyn Source Generator. This approach offers several benefits:
+This project replaces the T4 templates used for resource generation with cross-platform Roslyn Source Generator.
 
-## Benefits of Using Source Generators
+## Installation Steps
 
-1. **Cross-Platform Support**: Works on Windows, macOS, and Linux without any special dependencies
-2. **Build Integration**: Automatically runs as part of the standard build process
-3. **No Visual Studio Dependency**: Removes all Visual Studio-specific dependencies (EnvDTE, etc.)
-4. **Performance**: Source generators are generally faster than T4 templates
-5. **Better IDE Support**: Full IntelliSense support for the generated code
-6. **Simpler Maintenance**: Common code in one place rather than duplicated T4 templates
+1. For each project containing a Resources.tt file (BackOffice.Resources, CustomerPortal.Resources, LeadManagement.Resources), update the project file:
 
-## Affected Projects
+   a. Install the NuGet package:
+   ```bash
+   dotnet add package LinkSoft.ResourceGenerator
+   ```
 
-The following projects have been migrated from T4 templates to source generators:
-
-- `CustomerPortal.Resources`
-- `BackOffice.Resources`
-- `LeadManagement.Resources`
-
-## Steps
-
-1. First, build the ResourceGenerator project:
-```bash
-dotnet build src/ResourceGenerator/ResourceGenerator.csproj
-```
-
-2. For each project containing a Resources.tt file (BackOffice.Resources, CustomerPortal.Resources, LeadManagement.Resources), update the project file:
-
-   a. Open the .csproj file
-   b. Remove these items:
+   b. Remove the T4 template related items:
    ```xml
    <ItemGroup>
      <None Update="Resources.tt">
@@ -41,8 +23,8 @@ dotnet build src/ResourceGenerator/ResourceGenerator.csproj
    </ItemGroup>
 
    <ItemGroup>
-     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-   </ItemGroup>
+    <Service Include="{some-weird-guid}" />
+  </ItemGroup>
 
    <ItemGroup>
      <Compile Update="Resources.cs">
@@ -53,19 +35,17 @@ dotnet build src/ResourceGenerator/ResourceGenerator.csproj
    </ItemGroup>
    ```
 
-   c. Add these items instead:
-   ```xml
-   <ItemGroup>
-     <ProjectReference Include="..\..\ResourceGenerator\ResourceGenerator.csproj" 
-                       OutputItemType="Analyzer" 
-                       ReferenceOutputAssembly="false" />
-     <AdditionalFiles Include="*.resx" />
-   </ItemGroup>
-   ```
+   c. Make sure that the Resources.cs and Resources.tt files are deleted and excluded from the project
+  <ItemGroup>
+    <!-- Exclude the temporary Resources.cs file from compilation since we're using the generated one -->
+    <Compile Remove="Resources.cs" />
+    <!-- Delete the Resources.tt file since we don't need it anymore -->
+    <None Remove="Resources.tt" />
+  </ItemGroup>
 
-3. Remove the Resources.tt files and Resources.cs files (they will be auto-generated during build)
+2. Remove the Resources.tt files and Resources.cs files (they will be auto-generated during build)
 
-4. Build the solution:
+3. Build the solution:
 ```bash
 dotnet build
 ```
@@ -74,6 +54,6 @@ dotnet build
 
 - Cross-platform compatibility - works on Windows, macOS, and Linux
 - No Visual Studio dependency 
-- Automatically runs as part of the regular build process
-- No manual template execution required
+- Automatically runs as part of the regular build process, no manual template execution required
 - Much faster than T4 processing
+- Full intellisense support

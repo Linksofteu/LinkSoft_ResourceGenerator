@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.CodeAnalysis;
 
-namespace ResourceGenerator
+namespace LinkSoft.ResourceGenerator
 {
     [Generator]
     public class ResxSourceGenerator : ISourceGenerator

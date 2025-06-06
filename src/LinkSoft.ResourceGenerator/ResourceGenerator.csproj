@@ -3,20 +3,36 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+
+  <!-- These are necessary for the nuget to work properly as roslyn code analyser -->
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>        
+    <IsRoslynComponent>true</IsRoslynComponent>
+
+    <RootNamespace>LinkSoft.ResourceGenerator</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
+    <PackageId>LinkSoft.ResourceGenerator</PackageId>
+    <IsPackable>true</IsPackable>
+    <PackageReleaseNotes>
+    Initial release.
+    </PackageReleaseNotes>
+    <Description>
+    LinkSoft Resource Generator is a Roslyn-based source generator that simplifies the creation of strongly-typed resource classes in .NET applications.
+    </Description>
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>Linksoft Technologies a.s.</Authors>
     <Copyright>Copyright © 2024 Linksoft Technologies a.s.</Copyright>
-    <RepositoryUrl>https://github.com/Linksofteu/LinkSoft</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Linksofteu/LinkSoft_ResourceGenerator</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>logo-linksoft.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryBranch>main</RepositoryBranch>
-    <Version>2.0</Version>
+    <Version>2.0.2</Version>
     <!-- Enable NuGet package auditing -->
     <NuGetAudit>true</NuGetAudit>
     <!-- Audit direct and transitive packages -->
@@ -48,5 +64,10 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
   </ItemGroup>
+
+  <!-- These are necessary for the nuget to work properly as roslyn code analyser -->
+  <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
 
 </Project>
